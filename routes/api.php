@@ -23,13 +23,17 @@ Route::post('/login', [AuthenticationController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function (){
 
-    // --- Get Data Wallet
-    Route::get('history_wallet', [WalletsController::class, 'index']);
+    Route::prefix('wallet')->group(function (){
+
+        // --- Get Data Wallet
+        Route::get('history_wallet', [WalletsController::class, 'index']);
+        
+        // --- Top Up Data Wallet
+        Route::post('top_up', [WalletsController::class, 'store']);
     
-    // --- Top Up Data Wallet
-    Route::post('top_up', [WalletsController::class, 'store']);
-
-
-    // --- Withdraw Data Pallet
-    Route::post('withdraw', [WalletsController::class, 'update_wallet']);
+    
+        // --- Withdraw Data Pallet
+        Route::post('withdraw', [WalletsController::class, 'update_wallet']);
+    });
+    
 });

@@ -18,8 +18,11 @@ class WalletsController extends Controller
      */
     public function index(Request $request)
     {
-        $where_user =  $request->input('name');
 
+        // Set search request data by user/customer
+        $where_user =  $request->input('nasabah');
+
+        //get data for history saldo balance
         $data = TxWallet::with('detail_wallet','user')
         ->when($where_user, function($query,$where_user){
             return $query->whereHas('user', function($query2) use($where_user){
@@ -27,6 +30,7 @@ class WalletsController extends Controller
             });
         })->get();
 
+        // return data history saldo balance 
         if($data){
             return response()->json([
                 'message' => 'Succesfully Get History Saldo Balance',
@@ -118,7 +122,6 @@ class WalletsController extends Controller
          // Update amount balance
          $wallet->amount -= $amount;
          $wallet->save();
-
 
 
         // Insert into history wallet
